@@ -1,4 +1,10 @@
-import { TextField } from "@mui/material";
+import {
+  FormControl,
+  FormControlLabel,
+  Radio,
+  RadioGroup,
+  TextField,
+} from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
@@ -13,7 +19,7 @@ const SearchEngine = () => {
           component="h1"
           variant="h4"
           align="center"
-          sx={{ maxWith: "50%", marginTop: 12, marginBottom: 10 }}
+          sx={{ maxWith: "50%", marginTop: 12, marginBottom: 8 }}
         >
           Moteur de recherche
         </Typography>
@@ -31,6 +37,26 @@ const SearchEngine = () => {
             label="Recherche ..."
             fullWidth
           />
+
+          <FormControl sx={{ marginTop: 2, marginBottom: 2 }}>
+            <RadioGroup
+              row
+              aria-labelledby="demo-row-radio-buttons-group-label"
+              name="row-radio-buttons-group"
+            >
+              <FormControlLabel
+                value="simple"
+                control={<Radio />}
+                label="Simple"
+              />
+              <FormControlLabel
+                value="avancee"
+                control={<Radio />}
+                label="Avancée"
+              />
+            </RadioGroup>
+          </FormControl>
+
           <Button
             fullWidth
             type="submit"

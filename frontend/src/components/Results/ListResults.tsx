@@ -1,10 +1,4 @@
-import {
-  Card,
-  CardContent,
-  CardMedia,
-  Container,
-  Typography,
-} from "@mui/material";
+import { Card, CardContent, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { theme } from "../../utils/theme";
 
@@ -33,18 +27,13 @@ const ListResults = () => {
             display: "flex",
             maxHeight: "300px",
             maxWidth: "80vw",
+            alignItems: "center",
+            justify: "center",
           },
           marginBottom: 1,
           margin: 5,
         }}
       >
-        <CardMedia
-          component="img"
-          sx={{ width: 180, margin: 2 }}
-          image="https://ae01.alicdn.com/kf/S04dfdd2b70e84c63b70b0b7147b801efO/William-Shakespeare-Romeo-Juliet-Act-1-sc-ne-5.jpg_Q90.jpg_.webp"
-          alt="Live from space album cover"
-        />
-
         <Box sx={{ display: "flex", flexDirection: "column" }}>
           <CardContent sx={{ maxHeight: "60%" }}>
             <Typography
@@ -95,24 +84,6 @@ const ListResults = () => {
           </CardContent>
         </Box>
       </Card>
-
-      <Typography
-        component="h1"
-        variant="h5"
-        align="center"
-        sx={{ maxWith: "50%", marginTop: 12, marginBottom: 10 }}
-      >
-        Classement
-      </Typography>
-
-      <Typography
-        component="h1"
-        variant="h5"
-        align="center"
-        sx={{ maxWith: "50%", marginTop: 12, marginBottom: 10 }}
-      >
-        Suggestion
-      </Typography>
     </Box>
   );
 };
