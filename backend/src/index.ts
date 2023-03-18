@@ -3,16 +3,17 @@ import dotenv from "dotenv";
 import { getBooks } from "./utils/getBooks";
 import { db } from "./db/db";
 import { getIndex } from "./utils/getIndex";
-
+import router from "./routes";
 dotenv.config();
 
 const app: Express = express();
 const port = process.env.PORT;
 db();
 
+app.use("/api", router);
 app.get("/", async (req: Request, res: Response) => {
-  getBooks();
-  getIndex();
+  // await getBooks();
+  // await getIndex();
   res.send("Express + TypeScript Server");
 });
 

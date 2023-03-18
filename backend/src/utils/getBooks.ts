@@ -12,7 +12,7 @@ export const getBooks = async () => {
     const API_URL: string =
       process.env.API_URL ||
       "https://gutendex.com/books?mime_type=text%2Fplain";
-    for (let i = 1; i <= 60; i++) {
+    for (let i = 1; i <= 1; i++) {
       try {
         const bookList = await axios.get(API_URL + "&page=" + i);
         const parsedBookList = bookList.data;
