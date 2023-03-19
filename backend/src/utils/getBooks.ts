@@ -32,6 +32,8 @@ export const getBooks = async () => {
               id: book.id,
               titre: book.title,
               texte: textContent.data,
+              auteurs: book.authors.map((p: { name: any }) => p.name),
+              link: book.formats["text/plain; charset=utf-8"],
             });
             bookInstances.push(newBook);
           } else if (book.formats["text/plain; charset=us-ascii"]) {
@@ -42,6 +44,8 @@ export const getBooks = async () => {
               id: book.id,
               titre: book.title,
               texte: textContent.data,
+              auteurs: book.authors.map((p: { name: any }) => p.name),
+              link: book.formats["text/plain; charset=us-ascii"],
             });
             bookInstances.push(newBook);
           } else {
@@ -50,6 +54,8 @@ export const getBooks = async () => {
               id: book.id,
               titre: book.title,
               texte: textContent.data,
+              auteurs: book.authors.map((p: { name: any }) => p.name),
+              link: book.formats["text/plain"],
             });
             bookInstances.push(newBook);
           }
@@ -59,5 +65,6 @@ export const getBooks = async () => {
       }
     }
     await Book.insertMany(bookInstances);
+    console.log("books inserted");
   }
 };
