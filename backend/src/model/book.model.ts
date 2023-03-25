@@ -6,6 +6,7 @@ interface IBook {
   texte: string;
   auteurs: string[];
   link: string;
+  neighbors: number[];
 }
 
 const bookSchema = new mongoose.Schema<IBook>({
@@ -14,6 +15,7 @@ const bookSchema = new mongoose.Schema<IBook>({
   texte: { type: String, required: true },
   auteurs: [{ type: String, required: true }],
   link: { type: String, required: true },
+  neighbors: [{ type: Number, required: true }],
 });
 
 export const Book = mongoose.model<IBook>("Book", bookSchema);

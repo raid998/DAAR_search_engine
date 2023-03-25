@@ -40,3 +40,54 @@ export const search = async (query: string, threshold: number = 0.5) => {
   );
   return books;
 };
+
+async function updateBookNeighbors() {
+  const books = await Book.find();
+
+  if (books) {
+    for (const book of books) {
+      const bookWords = new Set(book.texte.split(/\s+/));
+      const bookNeighbors: number[] = [];
+
+      for (const word of bookWords) {
+        const indexEntry = await Index.findOne({ word });
+        if (indexEntry) {
+          for (const neighbor of indexEntry.books) {
+            if (neighbor !== book.id) {
+              const neighborWords = new Set(
+                (await Book.findOne({ id: neighbor }))?.texte.split(/\s+/) || []
+              );
+              const jaccardDistance =
+                bookWords.size === 0 && neighborWords.size === 0
+                  ? 0
+                  : bookWords.size === 0 || neighborWords.size === 0
+                  ? 1
+                  : 1 -
+                    intersectionSize(bookWords, neighborWords) /
+                      unionSize(bookWords, neighborWords);
+              if (jaccardDistance >= 0.4) {
+                bookNeighbors.push(neighbor);
+              }
+            }
+          }
+        }
+      }
+
+      await Book.updateOne({ id: book.id }, { neighbors: bookNeighbors });
+    }
+  }
+}
+
+function intersectionSize<T>(a: Set<T>, b: Set<T>): number {
+  let count = 0;
+  for (const elem of a) {
+    if (b.has(elem)) {
+      count++;
+    }
+  }
+  return count;
+}
+
+function unionSize<T>(a: Set<T>, b: Set<T>): number {
+  return a.size + b.size - intersectionSize(a, b);
+}
