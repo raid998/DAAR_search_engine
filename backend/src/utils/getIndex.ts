@@ -7,7 +7,7 @@ export const getIndex = async () => {
   for (let book of books) {
     const words = book.texte.toLowerCase().split(/\W+/);
     for (const word of words) {
-      if (word == "") continue;
+      if (word == "" || word.length <= 3) continue;
 
       const index = await Index.findOne({ word });
       if (!index) {
