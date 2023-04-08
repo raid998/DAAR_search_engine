@@ -8,7 +8,6 @@ export const search = async (query: string, threshold: number = 0.5) => {
   const results: { [index: number]: number } = {};
   for (const word of words) {
     const index = await Index.findOne({ word });
-    console.log(word);
     if (index) {
       for (const book of index.books) {
         if (results[book]) {
@@ -24,7 +23,6 @@ export const search = async (query: string, threshold: number = 0.5) => {
       delete results[bookID];
     }
   }
-  console.log(results);
 
   const scores = await Promise.all(
     Array.from(

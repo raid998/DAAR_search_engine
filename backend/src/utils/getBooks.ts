@@ -41,7 +41,6 @@ export const getBooks = async () => {
                 new Set(newBook.texte.toLowerCase().split(/\W+/))
               ),
             }));
-            console.log(newBook.texte.toLowerCase().split(/\W+/));
 
             for (const distance of distances) {
               const book = await Distance.findOne({
@@ -98,7 +97,7 @@ export const getBooks = async () => {
                 new Set(newBook.texte.toLowerCase().split(/\W+/))
               ),
             }));
-            console.log(newBook.texte.toLowerCase().split(/\W+/));
+
             for (const distance of distances) {
               const book = await Distance.findOne({
                 bookId: distance.bookId,
@@ -153,7 +152,6 @@ export const getBooks = async () => {
                 new Set(newBook.texte.toLowerCase().split(/\W+/))
               ),
             }));
-            console.log(newBook.texte.toLowerCase().split(/\W+/));
 
             for (const distance of distances) {
               const book = await Distance.findOne({
