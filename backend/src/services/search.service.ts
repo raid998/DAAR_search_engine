@@ -31,7 +31,10 @@ export const search = async (query: string, threshold: number = 0.5) => {
       Object.keys(results).map(async (id) => {
         const book = await Book.findOne({ id: +id });
         const texte = book?.texte.split(/\W+/);
-        return [id, jaccardDistance(words, texte as string[])];
+        return [
+          id,
+          jaccardDistance(new Set(words), new Set(texte as string[])),
+        ];
       })
     )
   );
