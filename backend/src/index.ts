@@ -1,11 +1,8 @@
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
-import { getBooks } from "./utils/getBooks";
 import { db } from "./db/db";
-import { getIndex } from "./utils/getIndex";
 import cors from "cors";
 import router from "./routes";
-import { fillDB } from "./fillDB";
 dotenv.config();
 
 const app: Express = express();
@@ -14,7 +11,6 @@ db();
 app.use(cors());
 app.use("/api", router);
 app.get("/", async (req: Request, res: Response) => {
-  await fillDB();
   res.send("Express + TypeScript Server");
 });
 

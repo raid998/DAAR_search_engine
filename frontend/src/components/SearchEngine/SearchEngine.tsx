@@ -21,6 +21,11 @@ import axios from "axios";
 const SearchEngine = () => {
   const [results, setResults] = useState([]);
   const [height, setHeight] = useState(0);
+  const [searchType, setSearchType] = useState("simple");
+  const [suggestions, setSuggestions] = useState<any>({});
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchType((event.target as HTMLInputElement).value);
+  };
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -41,9 +46,12 @@ const SearchEngine = () => {
   } = useForm<QueryInput>({ resolver: zodResolver(querySchema) });
   const submitQuery = async (data: QueryInput) => {
     const request = await axios.get(
-      "http://localhost:8080/api/search?query=" + data.query
+      "http://localhost:8080/api/search?query=" +
+        data.query +
+        "&type=" +
+        searchType
     );
-    const books = request.data.map(
+    const books = request.data.books.map(
       (
         book: any & {
           id: number;
@@ -60,6 +68,7 @@ const SearchEngine = () => {
         link: book.link,
       })
     );
+    setSuggestions(request.data.suggestion);
     setResults(books);
   };
   return (
@@ -113,6 +122,8 @@ const SearchEngine = () => {
               row
               aria-labelledby="demo-row-radio-buttons-group-label"
               name="row-radio-buttons-group"
+              value={searchType}
+              onChange={handleChange}
             >
               <FormControlLabel
                 value="simple"
@@ -127,7 +138,11 @@ const SearchEngine = () => {
             </RadioGroup>
           </FormControl>
         </Paper>
-        <ListResults height={height} books={results} />
+        <ListResults
+          height={height}
+          books={results}
+          suggestions={suggestions}
+        />
       </Container>
     </Box>
   );

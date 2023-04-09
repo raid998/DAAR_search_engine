@@ -3,7 +3,7 @@ import { Distance } from "../model/distances.model";
 import { Index } from "../model/index.model";
 import { jaccardDistance } from "../utils/jaccard";
 
-export const search = async (query: string, threshold: number = 0.5) => {
+export const simpleSearch = async (query: string, threshold: number = 0.5) => {
   const words = query.split(/\W+/);
   const results: { [index: number]: number } = {};
   for (const word of words) {
@@ -40,19 +40,54 @@ export const search = async (query: string, threshold: number = 0.5) => {
   const books = await Promise.all(
     scores.map(async ([id, score]) => await Book.findOne({ id: +id }))
   );
-  return { books, suggestions: suggestions(books, []) };
+  const suggestion = await suggestions(books);
+  return { books, suggestion };
 };
-
-const suggestions = (results: any[], rankedBooks: any[]) => {
+export const advancedSearch = async (query: string) => {
+  try {
+    const books = await Book.aggregate([
+      {
+        $match: {
+          texte: { $regex: query },
+        },
+      },
+      {
+        $addFields: {
+          occurrences: {
+            $size: {
+              $regexFindAll: {
+                input: "$texte",
+                regex: query,
+                options: "i",
+              },
+            },
+          },
+        },
+      },
+      {
+        $sort: { occurrences: -1 },
+      },
+    ]).exec();
+    const suggestion = await suggestions(books);
+    return { books, suggestion };
+  } catch (err) {
+    console.log(err);
+  }
+};
+const suggestions = async (results: any[]) => {
   const suggestions: Record<number, any> = {};
   for (const book of results) {
-    const suggestedBooks = rankedBooks.filter(
-      async (book) =>
-        (await Distance.findOne({ bookId: book.id }))?.distances.filter(
-          (book1) => book1.bookId === book.id
-        )[0].distance || 0 < 0.3
+    const suggestedBooks = (
+      await Distance.findOne({ bookId: book.id }).exec()
+    )?.distances
+      .sort((elem1, elem2) => elem1.distance - elem2.distance)
+      .slice(0, 3);
+    suggestions[book.id] = await Promise.all(
+      suggestedBooks?.map((suggestion) =>
+        Book.findOne({ id: suggestion.bookId })
+      ) || []
     );
-    suggestions[book.id] = suggestedBooks;
   }
+
   return suggestions;
 };

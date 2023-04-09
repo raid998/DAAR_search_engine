@@ -4,7 +4,15 @@ import { Link } from "react-router-dom";
 import { IBook } from "../../types";
 import { theme } from "../../utils/theme";
 import "./results.css";
-const ListResults = ({ height, books }: { height: number; books: IBook[] }) => {
+const ListResults = ({
+  height,
+  books,
+  suggestions,
+}: {
+  height: number;
+  books: IBook[];
+  suggestions: Record<number, any>;
+}) => {
   return (
     <Box
       flexDirection={"column"}
@@ -69,6 +77,16 @@ const ListResults = ({ height, books }: { height: number; books: IBook[] }) => {
                   (auteur) => auteur.split(",")[1] + " " + auteur.split(",")[0]
                 )}
               </Typography>
+              Suggested books :{" "}
+              <ul>
+                {suggestions[book.id].map((book: any) => (
+                  <li key={book.id}>
+                    <Link to={book.link} replace>
+                      {book.titre}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             </CardContent>
           </Box>
         </Card>
