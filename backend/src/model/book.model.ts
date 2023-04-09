@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-interface IBook {
+export interface IBook {
   id: number;
   titre: string;
   texte: string;

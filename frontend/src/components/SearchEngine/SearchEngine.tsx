@@ -47,7 +47,7 @@ const SearchEngine = () => {
   const submitQuery = async (data: QueryInput) => {
     const request = await axios.get(
       "http://localhost:8080/api/search?query=" +
-        data.query +
+        encodeURIComponent(data.query) +
         "&type=" +
         searchType
     );

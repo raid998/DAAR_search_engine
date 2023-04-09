@@ -74,7 +74,10 @@ const ListResults = ({
               >
                 by{" "}
                 {book.auteurs.map(
-                  (auteur) => auteur.split(",")[1] + " " + auteur.split(",")[0]
+                  (auteur) =>
+                    (auteur.split(",")[1] ?? "") +
+                    " " +
+                    (auteur.split(",")[0] ?? "")
                 )}
               </Typography>
               Suggested books :{" "}

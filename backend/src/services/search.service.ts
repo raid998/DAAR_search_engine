@@ -57,7 +57,7 @@ export const advancedSearch = async (query: string) => {
             $size: {
               $regexFindAll: {
                 input: "$texte",
-                regex: query,
+                regex: new RegExp(decodeURIComponent(query)),
                 options: "i",
               },
             },

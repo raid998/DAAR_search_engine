@@ -28,7 +28,7 @@ router.get("/", async (req, res) => {
   } catch (err) {
     console.log(err);
 
-    res.status(404).send([]);
+    res.status(404).send({ books: [], suggestion: [] });
   }
 });
 
